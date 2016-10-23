@@ -10,12 +10,17 @@ main(int argc, char *argv[])
 {
     //입력파일2개, 출력파일1개
     FILE *file1, *file2, *fout;
+    
+    //file끝
     int eof1 = 0, eof2 = 0;
+    
+    //file1 line + file2 line => lineout
     long line1 = 0, line2 = 0, lineout = 0;
-    struct timeval before, after;
+    struct timeval before, after; //time
     int duration;
     int ret = 1;
 
+    //input error
     if (argc != 4) {
         fprintf(stderr, "usage: %s file1 file2 fout\n", argv[0]);
         goto leave0;
@@ -70,7 +75,13 @@ leave0:
 int
 readaline_and_out(FILE *fin, FILE *fout)
 {    
-    int ch, count = 0;
+ 
+    int ch, count = 0;      //char ch
+    char arr_[300];          //reverse array
+    char temp;              //swap value
+    int count_2=0;          //string length
+    int i;
+    int j=0;
 
     do {
         if ((ch = fgetc(fin)) == EOF) {
@@ -81,9 +92,21 @@ readaline_and_out(FILE *fin, FILE *fout)
                 break;
             }
         }
-        fputc(ch, fout);
+        arr_[j]=ch;
         count++;
+        count_2++;
+        j++;
     } while (ch != 0x0a);
+    
+    for(i = 0; i < count_2 /2; i++){ //swap
+        temp = arr_[i];
+        arr_[i] = arr_[(count_2-1)-i];
+        arr_[(count_2-1)-i] = temp;
+    }
+    
+    for(i = 0; i < count_2; i++){ //fout file->write
+        fputc(arr_[i], fout);
+    }
     return 0;
 }
 
