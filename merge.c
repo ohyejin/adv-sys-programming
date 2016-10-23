@@ -8,6 +8,7 @@ int readaline_and_out(FILE *fin, FILE *fout);
 int
 main(int argc, char *argv[])
 {
+    //입력파일2개, 출력파일1개
     FILE *file1, *file2, *fout;
     int eof1 = 0, eof2 = 0;
     long line1 = 0, line2 = 0, lineout = 0;
