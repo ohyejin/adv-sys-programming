@@ -2,6 +2,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 int readaline_and_out(FILE *fin, FILE *fout);
 
@@ -10,8 +14,7 @@ main(int argc, char *argv[])
 {
     //입력파일2개, 출력파일1개
     FILE *file1, *file2, *fout;
-    
-    //file끝
+    struct stat file_s1, file_s2;
     int eof1 = 0, eof2 = 0;
     
     //file1 line + file2 line => lineout
@@ -37,6 +40,18 @@ main(int argc, char *argv[])
         perror(argv[3]);
         goto leave2;
     }
+    
+    /*
+    if(fstat(file1, &file_s1 < 0)) {
+        fprintf(stderr, "operate read file1 is error!\n");
+        goto leave3;
+    }
+    
+    if(fstat(file2, &file_s2 < 0)) {
+        fprintf(stderr, "operate read file2 is error!\n");
+        goto leave3;
+    }
+    */
     
     gettimeofday(&before, NULL);
     do {
@@ -98,7 +113,7 @@ readaline_and_out(FILE *fin, FILE *fout)
         j++;
     } while (ch != 0x0a);
     
-    for(i = 0; i < count_2 /2; i++){ //swap
+    for(i = 0; i < (count_2 / 2); i++){ //swap
         temp = arr_[i];
         arr_[i] = arr_[(count_2-1)-i];
         arr_[(count_2-1)-i] = temp;
